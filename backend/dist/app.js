@@ -14,6 +14,9 @@ const departmentRoutes_1 = __importDefault(require("./routes/departmentRoutes"))
 const venueRoutes_1 = __importDefault(require("./routes/venueRoutes"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const eventCategoryRoutes_1 = __importDefault(require("./routes/eventCategoryRoutes"));
+const eventRoutes_1 = __importDefault(require("./routes/eventRoutes"));
+const eventApprovalRoutes_1 = __importDefault(require("./routes/eventApprovalRoutes"));
+const registrationRoutes_1 = __importDefault(require("./routes/registrationRoutes"));
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cors_1.default)());
@@ -25,6 +28,9 @@ exports.app.use('/api/departments', departmentRoutes_1.default);
 exports.app.use('/api/venues', venueRoutes_1.default);
 exports.app.use('/api/users', userRoutes_1.default);
 exports.app.use('/api/categories', eventCategoryRoutes_1.default);
+exports.app.use('/api/events', eventRoutes_1.default);
+exports.app.use('/api/events-approval', eventApprovalRoutes_1.default);
+exports.app.use('/api/registrations', registrationRoutes_1.default);
 exports.app.get('/', (req, res) => {
     res.send('Knot API is running');
 });

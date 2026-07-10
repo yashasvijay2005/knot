@@ -16,6 +16,25 @@ enum Role {
   STUDENT
 }
 
+enum Visibility {
+  PRIVATE
+  COLLEGE
+  SELECTED_COLLEGES
+  PUBLIC
+}
+
+enum EventStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum RegStatus {
+  CONFIRMED
+  WAITLISTED
+  CANCELLED
+}
+
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
@@ -27,6 +46,10 @@ model User {
   college   College? @relation(fields: [collegeId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  eventsOrganized Event[] @relation("EventOrganizer")
+  teamMemberships TeamMember[]
+  registrations   Registration[]
 }
 
 model College {
@@ -37,6 +60,7 @@ model College {
   users       User[]
   departments Department[]
   venues      Venue[]
+  events      Event[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -68,6 +92,77 @@ model EventCategory {
   id          String   @id @default(uuid())
   name        String   @unique
   description String?
+  events      Event[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Event {
+  id             String        @id @default(uuid())
+  title          String
+  description    String
+  startDate      DateTime
+  endDate        DateTime
+  registrationEnd DateTime
+  maxParticipants Int
+  teamSizeMin    Int           @default(1)
+  teamSizeMax    Int           @default(1)
+  rules          String?
+  prizePool      String?
+  visibility     Visibility    @default(COLLEGE)
+  status         EventStatus   @default(PENDING)
+
+  categoryId     String
+  category       EventCategory @relation(fields: [categoryId], references: [id])
+
+  organizerId    String
+  organizer      User          @relation("EventOrganizer", fields: [organizerId], references: [id])
+
+  collegeId      String
+  college        College       @relation(fields: [collegeId], references: [id])
+
+  registrations  Registration[]
+  teams          Team[]
+
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Team {
+  id         String       @id @default(uuid())
+  name       String
+  eventId    String
+  event      Event        @relation(fields: [eventId], references: [id])
+  members    TeamMember[]
+  registration Registration?
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@unique([name, eventId])
+}
+
+model TeamMember {
+  id        String   @id @default(uuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  isLeader  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([teamId, userId])
+}
+
+model Registration {
+  id        String    @id @default(uuid())
+  eventId   String
+  event     Event     @relation(fields: [eventId], references: [id])
+  userId    String?   // For individual registration
+  user      User?     @relation(fields: [userId], references: [id])
+  teamId    String?   @unique // For team registration
+  team      Team?     @relation(fields: [teamId], references: [id])
+  status    RegStatus @default(CONFIRMED)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }

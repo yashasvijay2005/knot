@@ -8,6 +8,9 @@ import departmentRoutes from './routes/departmentRoutes';
 import venueRoutes from './routes/venueRoutes';
 import userRoutes from './routes/userRoutes';
 import eventCategoryRoutes from './routes/eventCategoryRoutes';
+import eventRoutes from './routes/eventRoutes';
+import eventApprovalRoutes from './routes/eventApprovalRoutes';
+import registrationRoutes from './routes/registrationRoutes';
 
 export const app = express();
 
@@ -22,6 +25,9 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/venues', venueRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/categories', eventCategoryRoutes);
+app.use('/api/events', eventRoutes);
+app.use('/api/events-approval', eventApprovalRoutes);
+app.use('/api/registrations', registrationRoutes);
 
 app.get('/', (req, res) => {
   res.send('Knot API is running');
