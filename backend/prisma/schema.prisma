@@ -36,6 +36,7 @@ model College {
   isVerified  Boolean      @default(false)
   users       User[]
   departments Department[]
+  venues      Venue[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -49,4 +50,24 @@ model Department {
   updatedAt DateTime @updatedAt
 
   @@unique([name, collegeId])
+}
+
+model Venue {
+  id          String   @id @default(uuid())
+  name        String
+  capacity    Int
+  collegeId   String
+  college     College  @relation(fields: [collegeId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([name, collegeId])
+}
+
+model EventCategory {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
