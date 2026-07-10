@@ -17,6 +17,8 @@ import notificationRoutes from './routes/notificationRoutes';
 import leaderboardRoutes from './routes/leaderboardRoutes';
 import certificateRoutes from './routes/certificateRoutes';
 import campusMapRoutes from './routes/campusMapRoutes';
+import feedbackRoutes from './routes/feedbackRoutes';
+import analyticsRoutes from './routes/analyticsRoutes';
 
 export const app = express();
 
@@ -40,6 +42,8 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/certificates', certificateRoutes);
 app.use('/api/campus-map', campusMapRoutes);
+app.use('/api/feedback', feedbackRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.get('/', (req, res) => {
   res.send('Knot API is running');
