@@ -6,6 +6,9 @@ import CategoriesPage from './pages/admin/CategoriesPage';
 import EventApprovalPage from './pages/admin/EventApprovalPage';
 import EventCreatePage from './pages/organizer/EventCreatePage';
 import RegisterPage from './pages/student/RegisterPage';
+import TicketPage from './pages/student/TicketPage';
+import ScanPage from './pages/volunteer/ScanPage';
+import NotificationsPage from './pages/student/NotificationsPage';
 
 function App() {
   return (
@@ -19,6 +22,8 @@ function App() {
         <Link to="/admin/events" className="text-blue-600">Admin: Event Approvals</Link>
         <Link to="/organizer/events/new" className="text-green-600">Organizer: Create Event</Link>
         <Link to="/student/register" className="text-purple-600">Student: Registrations</Link>
+        <Link to="/student/notifications" className="text-purple-600">Student: Notifications</Link>
+        <Link to="/volunteer/scan" className="text-orange-600">Volunteer: Scan QR</Link>
       </div>
       <Routes>
         <Route path="/" element={<div className="p-8"><h1 className="text-3xl font-bold">Knot Marketing Website</h1></div>} />
@@ -30,6 +35,9 @@ function App() {
         <Route path="/admin/events" element={<EventApprovalPage />} />
         <Route path="/organizer/events/new" element={<EventCreatePage />} />
         <Route path="/student/register" element={<RegisterPage />} />
+        <Route path="/student/ticket/:registrationId" element={<TicketPage />} />
+        <Route path="/student/notifications" element={<NotificationsPage />} />
+        <Route path="/volunteer/scan" element={<ScanPage />} />
       </Routes>
     </BrowserRouter>
   );

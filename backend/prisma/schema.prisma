@@ -50,6 +50,8 @@ model User {
   eventsOrganized Event[] @relation("EventOrganizer")
   teamMemberships TeamMember[]
   registrations   Registration[]
+  attendances     Attendance[]
+  notifications   Notification[]
 }
 
 model College {
@@ -123,6 +125,7 @@ model Event {
 
   registrations  Registration[]
   teams          Team[]
+  attendances    Attendance[]
 
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
@@ -156,6 +159,7 @@ model TeamMember {
 
 model Registration {
   id        String    @id @default(uuid())
+  ticketId  String    @unique @default(uuid()) // Add unique back
   eventId   String
   event     Event     @relation(fields: [eventId], references: [id])
   userId    String?   // For individual registration
@@ -165,4 +169,31 @@ model Registration {
   status    RegStatus @default(CONFIRMED)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model Attendance {
+  id            String   @id @default(uuid())
+  eventId       String
+  event         Event    @relation(fields: [eventId], references: [id])
+  userId        String
+  user          User     @relation(fields: [userId], references: [id])
+  checkInTime   DateTime @default(now())
+  checkOutTime  DateTime?
+  scannedBy     String?  // ID of volunteer who scanned
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([eventId, userId]) // Prevent duplicate scans
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
