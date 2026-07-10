@@ -1,0 +1,131 @@
+# KNOT Platform - Complete Setup Guide
+
+This guide provides a comprehensive overview of the technologies used in the KNOT application and step-by-step instructions on how to set it up, connect it to the database, and run it locally in your IDE.
+
+---
+
+## 🛠️ Technology Stack
+
+### Backend Stack
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Language:** TypeScript
+- **ORM:** Prisma
+- **Database:** PostgreSQL
+- **Authentication:** JWT (JSON Web Tokens) & bcrypt (Password Hashing)
+- **Validation:** Zod
+- **Development Tool:** Nodemon, ts-node
+
+### Frontend Stack
+- **Framework:** React 19
+- **Build Tool:** Vite
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **Routing:** React Router DOM
+- **Data Fetching:** Axios
+- **Maps:** React Leaflet
+- **Charts:** Recharts
+- **QR Codes:** html5-qrcode (Scanning), qrcode.react (Generation)
+
+---
+
+## 🚀 Prerequisites
+
+Before you begin, ensure you have the following installed on your machine:
+1. **Node.js:** v18 or higher
+2. **PostgreSQL:** Installed locally OR via Docker
+3. **IDE:** Visual Studio Code (Recommended)
+
+---
+
+## 🗄️ Database Setup (PostgreSQL)
+
+You need a running PostgreSQL database named `knot`.
+
+### Option A: Using Docker (Easiest)
+1. Open your terminal in the `backend` folder.
+2. Run the following command to start a PostgreSQL container:
+   `docker-compose up -d`
+   *This automatically sets up a database named `knot` on port `5432` with username `postgres` and password `password`.*
+
+### Option B: Using Local PostgreSQL Installation
+1. Open pgAdmin or your psql CLI.
+2. Create a new database named `knot`.
+3. Ensure your local PostgreSQL user has a known password.
+
+---
+
+## ⚙️ Backend Setup & Running in IDE
+
+1. **Open the project in VS Code:**
+   Open the root `knot` folder in Visual Studio Code.
+
+2. **Navigate to the Backend:**
+   Open an integrated terminal (`Ctrl+`` or `Cmd+``) and change directory to the backend:
+   `cd backend`
+
+3. **Install Dependencies:**
+   `npm install`
+
+4. **Configure Environment Variables:**
+   Rename the `.env.example` file to `.env`, OR create a new `.env` file in the `backend/` folder and add the following:
+
+   # Format: postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=public
+   DATABASE_URL="postgresql://postgres:password@localhost:5432/knot?schema=public"
+   PORT=5000
+   JWT_SECRET="supersecretjwtkey"
+   JWT_REFRESH_SECRET="supersecretrefreshkey"
+
+   *(Update the username and password in the URL if you used Option B for the database).*
+
+5. **Initialize Prisma & Database Schema:**
+   Run the following commands to push the schema to the database and generate the Prisma client:
+   `npx prisma migrate dev`
+   `npx prisma generate`
+
+6. **Run the Backend Server:**
+   `npm run dev`
+   You should see: `Server is running on port 5000`.
+
+---
+
+## 🎨 Frontend Setup & Running in IDE
+
+1. **Open a new terminal tab:**
+   Keep the backend running in the first terminal. Open a new terminal tab in VS Code.
+
+2. **Navigate to the Frontend:**
+   `cd frontend`
+
+3. **Install Dependencies:**
+   `npm install`
+
+4. **Run the Frontend Server:**
+   `npm run dev`
+   You should see an output indicating the server is running, usually at `http://localhost:5173`.
+
+---
+
+## 🌐 Navigating the Application
+
+Since KNOT is a multi-tenant platform built as a monorepo, access the different modules via these URLs in your browser:
+
+- **Marketing / Landing Page:** `http://localhost:5173/`
+- **Student Dashboard:** `http://localhost:5173/app`
+- **Admin Console:** `http://localhost:5173/admin`
+- **Student Registration:** `http://localhost:5173/student/register`
+- **Organizer Event Creation:** `http://localhost:5173/organizer/events/new`
+- **Volunteer QR Scanning:** `http://localhost:5173/volunteer/scan`
+
+---
+
+## 📝 Common Commands Cheatsheet
+
+**Backend:**
+- `npm run dev`: Starts the server with hot-reloading.
+- `npx prisma studio`: Opens a visual database browser in your browser at `http://localhost:5555`.
+- `npx prisma migrate dev --name <migration_name>`: Updates your database schema after you modify `schema.prisma`.
+
+**Frontend:**
+- `npm run dev`: Starts the Vite development server.
+- `npm run build`: Compiles the React application for production.
