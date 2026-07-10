@@ -13,7 +13,7 @@ exports.deleteVenue = exports.getVenues = exports.createVenue = void 0;
 const prisma_1 = require("../config/prisma");
 const createVenue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, capacity, collegeId } = req.body;
+        const { name, capacity, latitude, longitude, collegeId } = req.body;
         if (!name || !capacity || !collegeId) {
             res.status(400).json({ error: 'Name, capacity, and collegeId are required' });
             return;
@@ -26,7 +26,13 @@ const createVenue = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return;
         }
         const venue = yield prisma_1.prisma.venue.create({
-            data: { name, capacity: Number(capacity), collegeId },
+            data: {
+                name,
+                capacity: Number(capacity),
+                latitude: latitude ? Number(latitude) : null,
+                longitude: longitude ? Number(longitude) : null,
+                collegeId
+            },
         });
         res.status(201).json({ venue });
     }

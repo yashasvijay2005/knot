@@ -4,11 +4,14 @@ import VenuesPage from './pages/admin/VenuesPage';
 import UsersPage from './pages/admin/UsersPage';
 import CategoriesPage from './pages/admin/CategoriesPage';
 import EventApprovalPage from './pages/admin/EventApprovalPage';
+import LeaderboardPage from './pages/admin/LeaderboardPage';
 import EventCreatePage from './pages/organizer/EventCreatePage';
 import RegisterPage from './pages/student/RegisterPage';
 import TicketPage from './pages/student/TicketPage';
 import ScanPage from './pages/volunteer/ScanPage';
 import NotificationsPage from './pages/student/NotificationsPage';
+import CertificatesPage from './pages/student/CertificatesPage';
+import CampusMapPage from './pages/student/CampusMapPage';
 
 function App() {
   return (
@@ -20,9 +23,12 @@ function App() {
         <Link to="/admin/users" className="text-blue-600">Admin: Users</Link>
         <Link to="/admin/categories" className="text-blue-600">Admin: Categories</Link>
         <Link to="/admin/events" className="text-blue-600">Admin: Event Approvals</Link>
+        <Link to="/admin/leaderboards" className="text-blue-600">Admin: Leaderboards</Link>
         <Link to="/organizer/events/new" className="text-green-600">Organizer: Create Event</Link>
         <Link to="/student/register" className="text-purple-600">Student: Registrations</Link>
         <Link to="/student/notifications" className="text-purple-600">Student: Notifications</Link>
+        <Link to="/student/certificates" className="text-purple-600">Student: Certificates</Link>
+        <Link to="/student/campus-map" className="text-purple-600">Student: Campus Map</Link>
         <Link to="/volunteer/scan" className="text-orange-600">Volunteer: Scan QR</Link>
       </div>
       <Routes>
@@ -33,10 +39,13 @@ function App() {
         <Route path="/admin/users" element={<UsersPage />} />
         <Route path="/admin/categories" element={<CategoriesPage />} />
         <Route path="/admin/events" element={<EventApprovalPage />} />
+        <Route path="/admin/leaderboards" element={<LeaderboardPage />} />
         <Route path="/organizer/events/new" element={<EventCreatePage />} />
         <Route path="/student/register" element={<RegisterPage />} />
         <Route path="/student/ticket/:registrationId" element={<TicketPage />} />
         <Route path="/student/notifications" element={<NotificationsPage />} />
+        <Route path="/student/certificates" element={<CertificatesPage />} />
+        <Route path="/student/campus-map" element={<CampusMapPage />} />
         <Route path="/volunteer/scan" element={<ScanPage />} />
       </Routes>
     </BrowserRouter>

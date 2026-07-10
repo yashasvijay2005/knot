@@ -52,6 +52,8 @@ model User {
   registrations   Registration[]
   attendances     Attendance[]
   notifications   Notification[]
+  scoresGiven     Score[]
+  certificates    Certificate[]
 }
 
 model College {
@@ -82,6 +84,8 @@ model Venue {
   id          String   @id @default(uuid())
   name        String
   capacity    Int
+  latitude    Float?   // Added for Campus Navigation
+  longitude   Float?   // Added for Campus Navigation
   collegeId   String
   college     College  @relation(fields: [collegeId], references: [id])
   createdAt   DateTime @default(now())
@@ -126,6 +130,8 @@ model Event {
   registrations  Registration[]
   teams          Team[]
   attendances    Attendance[]
+  scores         Score[]
+  certificates   Certificate[]
 
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
@@ -159,7 +165,7 @@ model TeamMember {
 
 model Registration {
   id        String    @id @default(uuid())
-  ticketId  String    @unique @default(uuid()) // Add unique back
+  ticketId  String    @unique @default(uuid())
   eventId   String
   event     Event     @relation(fields: [eventId], references: [id])
   userId    String?   // For individual registration
@@ -194,6 +200,39 @@ model Notification {
   title     String
   message   String
   isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Score {
+  id        String   @id @default(uuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  judgeId   String
+  judge     User     @relation(fields: [judgeId], references: [id])
+
+  participantId String? // userId if individual, teamId if team
+
+  score     Float
+  feedback  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([eventId, judgeId, participantId])
+}
+
+model Certificate {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  eventId   String?
+  event     Event?   @relation(fields: [eventId], references: [id])
+  type      String   // PARTICIPATION, WINNER, VOLUNTEER, JUDGE
+  issueDate DateTime @default(now())
+  url       String?  // Link to PDF/Image stored in Cloudinary
+  hash      String   @unique // Cryptographic hash for verification
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

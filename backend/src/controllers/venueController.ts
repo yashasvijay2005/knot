@@ -3,7 +3,7 @@ import { prisma } from '../config/prisma';
 
 export const createVenue = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, capacity, collegeId } = req.body;
+    const { name, capacity, latitude, longitude, collegeId } = req.body;
 
     if (!name || !capacity || !collegeId) {
       res.status(400).json({ error: 'Name, capacity, and collegeId are required' });
@@ -20,7 +20,13 @@ export const createVenue = async (req: Request, res: Response): Promise<void> =>
     }
 
     const venue = await prisma.venue.create({
-      data: { name, capacity: Number(capacity), collegeId },
+      data: {
+        name,
+        capacity: Number(capacity),
+        latitude: latitude ? Number(latitude) : null,
+        longitude: longitude ? Number(longitude) : null,
+        collegeId
+      },
     });
 
     res.status(201).json({ venue });
